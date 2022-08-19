@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no" />
+    <title>Spheres³</title>
+    <link rel="stylesheet" href="./sonysketchef.css" />
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+    <!-- Top Info -->
+    <div id="title">
+        <div class="container">
+            <div id="timer" class="item">0:00</div>
+            <div id="progressContainer" class="item">
+                <!--<span id="track"></span>-->
+                <div id="track"></div>
+                <div id="progress">
+                    <div id="progressEmpty"></div>
+                    <div id="progressBar" class="item"></div>
+                    <div id="progressBtn"></div>
+                </div>
+            </div>
+            <div id="duration" class="item">0:00</div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div id="controlsOuter">
+        <div class="controlsInner">
+            <div id="loading"></div>
+            <div class="btn red" id="playBtn"></div>
+            <div class="btn red" id="pauseBtn"></div>
+            <div class="btn red" id="prevBtn"></div>
+            <div class="btn red" id="nextBtn"></div>
+        </div>
+        <div class="btn red" id="playlistBtn"></div>
+        <div class="btn red" id="colorlistBtn"></div>
+        <div class="btn red" id="rotationBtn"></div>
+        <div class="btn red" id="volumeBtn"></div>
+    </div>
+
+    <!-- Progress -->
+    <!--<div id="waveform"></div>
+  <div id="bar"></div>
+  div id="progress"></div>-->
+
+    <!-- Playlist -->
+    <div id="playlist">
+        <div id="plist"></div>
+    </div>
+
+    <!-- Colorlist -->
+    <div id="colorlist">
+        <div id="clist">
+            <div class="list-color" onclick="recolor(COLORS.ALL);">All</div>
+            <div class="list-color" style="color: red;" onclick="recolor(COLORS.RED);">Red</div>
+            <div class="list-color" style="color: green;" onclick="recolor(COLORS.GREEN);">Green</div>
+            <div class="list-color" style="color: blue;" onclick="recolor(COLORS.BLUE);">Blue</div>
+            <div class="list-color" style="color: orange;" onclick="recolor(COLORS.ORANGE);">Orange</div>
+            <div class="list-color" style="color: hotpink;" onclick="recolor(COLORS.PINK);">Pink</div>
+            <div class="list-color" id="pnkblue" onclick="recolor(COLORS.DUAL.PINK_BLUE);">Pink &amp; Blue</div>
+            <div class="list-color" id="redblue" onclick="recolor(COLORS.DUAL.RED_BLUE);">Red &amp; Blue</div>
+            <div class="list-color" id="grnorng" onclick="recolor(COLORS.DUAL.GREEN_ORANGE);">Green &amp; Orange</div>
+            <div class="list-color" id="orngblu" onclick="recolor(COLORS.DUAL.ORANGE_BLUE);">Orange &amp; Blue</div>
+            <div class="list-color" id="bluegrn" onclick="recolor(COLORS.DUAL.BLUE_GREEN);">Blue &amp; Green</div>
+        </div>
+    </div>
+
+    <!-- Volume -->
+    <div id="volume" class="fadeout">
+        <div id="barFull" class="bar"></div>
+        <div id="barEmpty" class="bar"></div>
+        <div id="sliderBtn"></div>
+    </div>
+
+    <!-- Debugging Shit -->
+    <div id="debug">
+        <div id="freeze">freeze</div>
+    </div>
+
+    <!-- Scripts -->
+    <!--  JQuery  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./howler.core.js"></script>
+    <script src="./three.js"></script>
+    <!--
+    <script src="./threex.atmospherematerial.js"></script>
+    <script src="./threex.dilategeometry.js"></script>-->
+    <script src="./threex.poolball.js"></script>
+    <script src="./OrbitControls.js"></script>
+    <script src="./player.js"></script>
+    <script>
+        window.onload = function() {
+            alternate('hotpink|blue', 'pnkblue');
+            alternate('red|blue', 'redblue');
+            alternate('lime|orange', 'grnorng');
+            alternate('orange|blue', 'orngblu');
+            alternate('blue|green', 'bluegrn');
+        };
+
+    </script>
+
+<script type="x-shader/x-vertex" id="vertexShader">
+
+            attribute float time;
+            uniform float globalTime;
+
+            varying vec3 vColor;
+            varying float vAlpha;
+
+            void main() {
+
+                vColor = color;
+
+                vec3 pos = position;
+
+                // time
+                float localTime = time + globalTime;
+                float f = fract( localTime );
+                float accTime = f * f;
+
+                // animation
+                float angle = accTime * 40.0;
+                vec2 pulse = vec2( sin( angle ) * 20.0, cos( angle ) * 20.0 );
+                vec3 animated = vec3( pos.x * accTime + pulse.x, pos.y * accTime + pulse.y, pos.z * accTime * 1.75 );
+                vAlpha = ( 1.0 - f ) * 2.0;
+
+                vec4 mvPosition = modelViewMatrix * vec4( animated, 1.0 );
+
+                gl_PointSize = min( 100.0, ( accTime * 100.0 ) * ( 150.0 / length( mvPosition.xyz ) ) );
+
+                gl_Position = projectionMatrix * mvPosition;
+
+            }
+
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentShader">
+
+            uniform vec3 baseColor;
+            uniform sampler2D map;
+
+            varying vec3 vColor;
+            varying float vAlpha;
+
+            void main() {
+
+                gl_FragColor = vec4( baseColor * vColor, vAlpha );
+                gl_FragColor *= texture2D( map, gl_PointCoord );
+
+            }
+
+</script>
+    <script src="./visualizer.js"></script>
+
+</body>
+
+</html>
