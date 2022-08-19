@@ -1,4 +1,4 @@
-# Audio Player ([Live Demo](https://howlerjs.com/#player))
+# Cubed Spheres ([Live Demo](https://howlerjs.com/#player))
 
 ![Audio Player](https://s3.amazonaws.com/howler.js/screenshot-player.jpg "Player Screenshot")
 
@@ -12,9 +12,10 @@ This example displays how to construct a basic audio player using howler.js as t
 
 ## How-To
 1. Clone the git repo or download the source:
-    * **Clone:** `git clone https://github.com/goldfire/howler.js.git`
-    * **Download:** [https://github.com/goldfire/howler.js/archive/master.zip](https://github.com/goldfire/howler.js/archive/master.zip)
+    * **Clone:** `git clone https://github.com/zygeist/CubedSpheres.git`
+    * **Download:** [https://github.com/zygeist/CubedSpheres/archive/master.zip](https://github.com/zygeist/CubedSpheres/archive/master.zip)
 2. Open `index.html` in your favorite browser.
 
 ## Credits
 Sample audio tracks by [FoolBoyMedia](http://www.foolboymedia.co.uk/), licensed under [Creative Commons](http://creativecommons.org/licenses/by-nc/3.0/).
+
