@@ -381,7 +381,7 @@ var player = new Player([
         file: '06-Lucent_Transmissions.mp3',
         howl: null,
         dB: 1.0,
-        dR: 0.75
+        dR: 2.75
     },
     {
         title: 'Buried',
@@ -458,7 +458,7 @@ var player = new Player([
         file: '17-Exoplanet.ogg',
         howl: null,
         dB: 2.0,
-        dR: 1.0
+        dR: 2.0
     },
     {
         title: 'Scarabaeus',

@@ -66,8 +66,8 @@ var tkgeom;
 var clock = new THREE.Clock();
 var particleCount = 500;
 var radiusP = 25;
-var particleState = true;
-var knotState = true;
+var particleState = false;
+var knotState = false;
 
 var gridsize = 32;
 var stepsize = 2;
